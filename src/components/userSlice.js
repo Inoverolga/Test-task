@@ -4,15 +4,15 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
-import { useHttp } from "../hook/useHook";
+import { useHttp } from "./hook/useHook";
 
 const userAdapter = createEntityAdapter({});
 
 const initialState = userAdapter.getInitialState({
   userLoadingStatus: "idle",
   modal: {
-    isOpen: false, // объединил isOpenEditModal и isCloseEditModal в одно поле
-    mode: null, // 'add' или 'edit' - вместо methodOpen
+    isOpen: false,
+    mode: null,
     currentUser: null, // тут хранится временное состояние персонажа, которого редактируем при открытой модалке
   },
   searchText: "",
@@ -54,11 +54,10 @@ const usersSlice = createSlice({
     },
 
     userUpdated: (state, action) => {
-      // хранится состояние измененного песрсонажа после закрытия модалки
+      // хранится состояние измененного персонажа после закрытия модалки
       userAdapter.updateOne(state, action.payload);
     },
     setSearchText: (state, action) => {
-      // Добавлен новый reducer
       state.searchText = action.payload;
     },
   },
@@ -89,16 +88,13 @@ export const {
   setSearchText,
 } = usersSlice.actions;
 
-export const {
-  selectAll: selectAllUsers, // Селектор всех пользователей
-  selectById: selectUserById, // Селектор пользователя по ID
-  selectIds: selectUserIds, // Селектор только ID пользователей
-} = userAdapter.getSelectors((state) => state.user);
+export const { selectAll: selectAllUsers } = userAdapter.getSelectors(
+  (state) => state.user,
+);
 
 export const selectFilteredUsers = createSelector(
   [selectAllUsers, (state) => state.user.searchText], // Зависимости
   (users, searchText) => {
-    // Функция преобразования
     if (!searchText) return users;
 
     const searchLower = searchText.toLowerCase();
@@ -108,7 +104,6 @@ export const selectFilteredUsers = createSelector(
         String(user.name).toLowerCase().includes(searchLower) ||
         String(user.age).includes(searchText) ||
         new Date(user.date).toLocaleDateString().includes(searchText)
-        //это встроенная функция JavaScript для объектов Date, которая возвращает строку с датой, отформатированной согласно локальным настройкам (языку и региону) пользователя.
       );
     });
   },

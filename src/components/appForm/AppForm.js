@@ -3,15 +3,13 @@ import { Form, Input, InputNumber, DatePicker } from "antd";
 const AppForm = ({ form }) => {
   return (
     <Form
-      form={form} //из модалки заполненная форма
-      name="basic" // Идентификатор формы
-      labelCol={{ span: 8 }} // Ширина колонки для label (в 24-колоночной системе AntD)
-      wrapperCol={{ span: 16 }} // Ширина колонки для поля ввода
-      style={{ maxWidth: 600 }} // Максимальная ширина формы
-      initialValues={{ remember: true }} // Начальные значения полей
-      //onFinish={onFinish} // Функция при успешной отправке
-      //onFinishFailed={onFinishFailed} // Функция при ошибке валидации
-      autoComplete="off" // Отключает автозаполнение браузера
+      form={form}
+      name="basic"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      style={{ maxWidth: 600 }}
+      initialValues={{ remember: true }}
+      autoComplete="off"
     >
       <Form.Item
         label="Name"

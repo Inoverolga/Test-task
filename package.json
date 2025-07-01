@@ -1,5 +1,6 @@
 {
   "name": "app-test",
+  "homepage": "https://inoverolga.github.io/Test-task",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +13,7 @@
     "@types/uuid": "^10.0.0",
     "antd": "^5.26.3",
     "concurrently": "^9.2.0",
+    "gh-pages": "^6.3.0",
     "json-server": "^0.17.4",
     "modern-normalize": "^3.0.1",
     "node-sass": "^7.0.3",
@@ -28,7 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

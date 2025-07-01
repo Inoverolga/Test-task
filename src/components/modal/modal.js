@@ -4,24 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import AppForm from "../appForm/AppForm";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  openAddModal,
-  closeModal,
-  userAdded,
-  userUpdated,
-} from "../appForm/userSlice";
+import { openAddModal, closeModal, userAdded, userUpdated } from "../userSlice";
 
 import "../modal/modal.scss";
 import { useHttp } from "../hook/useHook";
 import Swal from "sweetalert2";
 const AppModal = () => {
   const [form] = Form.useForm();
-  // вытаскиваем из формы
-  // getFieldValue	Получить значение поля	form.getFieldValue('name')
-  // setFieldsValue	Установить значения	form.setFieldsValue({name: 'John'})
-  // validateFields	Валидация формы	form.validateFields()
-  // resetFields	Сброс формы	form.resetFields()
-  // submit	Отправка формы	form.submit()
 
   const dispatch = useDispatch();
   const { request } = useHttp();
@@ -30,11 +19,9 @@ const AppModal = () => {
   ); //получаем глобальное состоняние
   const [confirmLoading, setConfirmLoading] = useState(false); //локально состояние загрузки модалки
 
-  // Устанавливаем значения формы при открытии редактирования
   useEffect(() => {
     if (mode === "edit" && currentUser) {
       form.setFieldsValue({
-        //Метод из Ant Design Form, который устанавливает значения полей
         name: currentUser.name,
         date: dayjs(currentUser.date),
         age: currentUser.age,
@@ -53,7 +40,7 @@ const AppModal = () => {
         id: uuidv4(), // для json-server
         name: values.name,
         date: values.date.startOf("day").format("YYYY-MM-DD"),
-        age: Number(values.age), // преобразуем в число
+        age: Number(values.age),
       };
 
       console.log(userData);
@@ -75,7 +62,7 @@ const AppModal = () => {
 
       form.resetFields();
 
-      dispatch(closeModal()); //закрываем модалку через диспатч
+      dispatch(closeModal());
     } catch (error) {
       console.error("Ошибка при отправке формы:", error);
 
@@ -95,15 +82,14 @@ const AppModal = () => {
       setConfirmLoading(true);
       const values = await form.validateFields();
 
-      // Форматируем дату перед созданием объекта
       const formattedValues = {
         ...values,
         date: values.date.startOf("day").format("YYYY-MM-DD"),
       };
 
       const updatedUser = {
-        id: currentUser.id, // сохраняем оригинальный ID
-        ...formattedValues, // новые значения полей
+        id: currentUser.id,
+        ...formattedValues,
       };
 
       await request(
@@ -117,7 +103,7 @@ const AppModal = () => {
           id: currentUser.id,
           changes: {
             ...values,
-            date: values.date.startOf("day").format("YYYY-MM-DD"), // Преобразуем dayjs в строку
+            date: values.date.startOf("day").format("YYYY-MM-DD"),
           },
         }),
       );
@@ -131,7 +117,7 @@ const AppModal = () => {
 
       form.resetFields();
 
-      dispatch(closeModal()); //закрываем модалку через диспатч
+      dispatch(closeModal());
     } catch (error) {
       console.error("Ошибка при отправке формы:", error);
 
@@ -147,7 +133,7 @@ const AppModal = () => {
   };
 
   const showModal = () => {
-    dispatch(openAddModal()); //открываем через диспатч
+    dispatch(openAddModal());
     setConfirmLoading(false);
   };
 
@@ -169,7 +155,7 @@ const AppModal = () => {
             <p>Внесите изменения в форму</p>
           )
         }
-        confirmLoading={confirmLoading} // ← Теперь Spin на всю модалку!
+        confirmLoading={confirmLoading}
         open={isOpen}
         onOk={mode === "edit" && currentUser ? editHandleSubmit : handleSubmit}
         onCancel={handleCancel}

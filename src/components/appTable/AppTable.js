@@ -7,7 +7,7 @@ import {
   setSearchText,
   selectFilteredUsers,
   selectAllUsers,
-} from "../appForm/userSlice";
+} from "../userSlice";
 import { useEffect, useCallback } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import "../appTable/appTable.scss";
@@ -22,12 +22,6 @@ const AppTable = () => {
   useEffect(() => {
     dispatch(fetchUser()); // Загружаем данные при монтировании
   }, []);
-
-  //console.log(dataUsers); // Проверьте данные в консоли
-  //[ вернет массив со всеми пользователями
-  //   { id: 1, name: "John", age: 25 },
-  //   { id: 2, name: "Alice", age: 30 }
-  //]
 
   const { request } = useHttp();
 
@@ -60,32 +54,7 @@ const AppTable = () => {
           value: name,
         }),
       ),
-      //filters: Array.from(new Set(dataUsers.map((item) => item.name))).map(
-      //   (name) => ({
-      //     text: name,  // Отображаемый текст в фильтре
-      //     value: name, // Значение для фильтрации
-      //   })
-      // )
-      // dataUsers.map((item) => item.name)
 
-      // Преобразуем массив объектов в массив имен:
-      // ['John', 'Alice', 'Bob', 'John'] → ['John', 'Alice', 'Bob']
-
-      // new Set()
-
-      // Удаляем дубликаты, оставляя только уникальные значения:
-      // ['John', 'Alice', 'Bob']
-
-      // Array.from()
-
-      // Преобразуем Set обратно в массив (так как Set не является массивом).
-
-      // .map()
-
-      // Форматируем каждый элемент в объект, который ожидает Ant Design:
-
-      // javascript
-      // { text: 'John', value: 'John' }
       onFilter: (value, record) => record.name.includes(value),
       filterSearch: true,
     },
@@ -107,10 +76,7 @@ const AppTable = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (
-        _,
-        record, //record — это объект, содержащий все данные текущей строки таблицы.
-      ) => (
+      render: (_, record) => (
         <Space size="small">
           <Button
             icon={<EditOutlined />}
@@ -141,7 +107,7 @@ const AppTable = () => {
         className="app__input"
         value={searchText}
         onChange={(e) => dispatch(setSearchText(e.target.value))}
-        allowClear // Добавляем кнопку очистки
+        allowClear
       />
       <Table dataSource={dataFiltredUsers} columns={columns} rowKey="id" />
     </>
